@@ -44,10 +44,10 @@ window.addEventListener('DOMContentLoaded', () => {
             document.getElementById("unit" + cnt).animate([
               {
                 left: "40%",
-                top: "10em"
+                top: "8em"
               },{
                 left: pos[cnt]*2 + "0%",
-                top: "3em"
+                top: "4em"
               }
             ], {
               duration: 2000,
@@ -57,16 +57,16 @@ window.addEventListener('DOMContentLoaded', () => {
             })
 
             setTimeout(() => {
-              if(cnt === 0 || Math.random()<0.5) nextPhoto();
+              if(cnt === 0 || cnt === 2 || cnt === 4) nextPhoto();
               ++cnt;
               if(cnt==5){
                 document.getElementById("button").style.display = "none";
                 for (let i = 0; i < 5; i++) {
                   document.getElementById("unit" + i).animate([
                     {
-                      top: "3em"
+                      top: "4em"
                     },{
-                      top: "10em"
+                      top: "8em"
                     }
                   ], {
                     duration: 1000,
