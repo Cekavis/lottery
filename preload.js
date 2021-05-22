@@ -9,59 +9,60 @@ window.addEventListener('DOMContentLoaded', () => {
       photoPaths.push(photos[i].path);
     }
     console.log(photoPaths);
+    document.getElementById('file_input').style.display = "none";
   }
-
-  var flag = 0, stop = true, cnt = 0, vis = [], pos = [0, 4, 1, 3, 2];
-
+  var interval = 0, state = true, surprise = 0, cur = 0, used = [], pos = [0, 5, 1, 4, 2, 3];
+  
   function nextPhoto() {
     var newPhoto;
     do {
       newPhoto = photoPaths[Math.floor(Math.random()*photoPaths.length)];
-    } while (vis.includes(newPhoto));
-    var oldPhoto = document.getElementById('photo' + cnt).src;
-    if (vis.includes(oldPhoto)) vis.splice(vis.indexOf(oldPhoto, 1));
-    vis.push(newPhoto);
-    document.getElementById('unit' + cnt).style.display = "block";
-    document.getElementById('caption' + cnt).innerHTML = path.basename(newPhoto, path.extname(newPhoto));
-    document.getElementById('photo' + cnt).src = newPhoto;
+    } while (used.includes(newPhoto));
+    var oldPhoto = document.getElementById('photo' + cur).src;
+    if (used.includes(oldPhoto)) used.splice(used.indexOf(oldPhoto, 1));
+    used.push(newPhoto);
+    document.getElementById('unit' + cur).style.display = "block";
+    document.getElementById('caption' + cur).innerHTML = path.basename(newPhoto, path.extname(newPhoto));
+    document.getElementById('photo' + cur).src = newPhoto;
   }
-
-  document.getElementById('button').onclick = function() {
-    document.getElementById('file_input').style.display = "none";
-    if (stop) {
-      stop = false;
-      flag = 100;
-      setTimeout(function change() {
-        nextPhoto();
-        if(stop) flag = flag * 1.5;
-        if(flag < 700){
-          setTimeout(() => {
-            change();
-          }, flag);
-        }
-        else{
-          setTimeout(() => {
-            document.getElementById("unit" + cnt).animate([
-              {
-                left: "40%",
-                top: "8em"
-              },{
-                left: pos[cnt]*2 + "0%",
-                top: "4em"
-              }
-            ], {
-              duration: 2000,
-              delay: 1000,
-              fill: "forwards",
-              easing: "ease",
-            })
-
+  
+  document.onkeydown = function (e) {
+    if(e.key === " "){
+      if (state) {
+        state = false;
+        interval = 50;
+        setTimeout(function change() {
+          console.log(interval);
+          nextPhoto();
+          if(interval < 200 || surprise > 0){
+            if(state){
+              if(interval < 200) interval = interval * 2;
+              else --surprise;
+            }
             setTimeout(() => {
-              if(cnt === 0 || cnt === 2 || cnt === 4) nextPhoto();
-              ++cnt;
-              if(cnt==5){
-                document.getElementById("button").style.display = "none";
-                for (let i = 0; i < 5; i++) {
+              change();
+            }, interval);
+          }
+          else{
+            setTimeout(() => {
+              document.getElementById("unit" + cur).animate([
+                {
+                  left: "41.6666%",
+                  top: "8em"
+                },{
+                  left: pos[cur]*16.6666 + "%",
+                  top: "4em"
+                }
+              ], {
+                duration: 2000,
+                delay: 400,
+                fill: "forwards",
+                easing: "ease",
+              })
+              
+              ++cur;
+              if(cur === 6){
+                for (let i = 0; i < 6; i++) {
                   document.getElementById("unit" + i).animate([
                     {
                       top: "4em"
@@ -70,19 +71,20 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                   ], {
                     duration: 1000,
-                    delay: 3300+pos[i]*300,
+                    delay: 2700+pos[i]*300,
                     fill: "forwards",
                     easing: "ease",
                   });
                 }
               }
-            }, 3000);
-          }, 700);
-        }
-      }, flag);
+            }, 700);
+          }
+        }, interval);
+      }
+      else {
+        state = true;
+        surprise = Math.floor(Math.random()*3);
+      }
     }
-    else {
-      stop = true;
-    }
-  }
+  };
 })

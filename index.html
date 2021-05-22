@@ -5,25 +5,42 @@
     <title>抽奖</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <style>
+        @keyframes animated-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0,0,255,0.4);
+            }
+            100% {
+                box-shadow: 0 0 0 20px rgba(0,0,255,0);
+            }
+        }
+
         .unit {
             display: none;
             position: absolute;
-            left: 40%;
+            left: 41.6666%;
             top: 8em;
-            width: 20%;
+            width: 16.6666%;
         }
         .photo {
+            /* animation: animated-border 1.5s infinite; */
             width: 17em;
             /* height: 31.5em; */
             /* max-height: 100%; */
             display: block;
             margin: 0 auto;
-            border: 3px double salmon;
+            border: thick double;
+            border-radius: 2em;
+            box-shadow: -15px -15px 8px -5px rgba(0, 0, 0, 0.4);
         }
         .frame{
             /* height: 80%; */
             display: block;
             margin: 0 auto;
+        }
+        #file_input {
+            position: absolute;
+            top: 1em;
+            left: 3em;
         }
         #button {
             position: absolute;
@@ -34,15 +51,12 @@
         #footnote {
             position: absolute;
             right: 2em;
-            top: 39.5em;
+            top: 40.5em;
             font-family: Arial, sans-serif;
             text-align: right;
             line-height: 0.5;
         }
         #made_by {
-            font-size: 20px;
-        }
-        #powered_by {
             font-size: 20px;
         }
         p {
@@ -76,12 +90,14 @@
             <div class="frame"><img class="photo" id="photo4"></div>
             <p id="caption4"></p>
         </div>
+        <div class="unit" id="unit5">
+            <div class="frame"><img class="photo" id="photo5"></div>
+            <p id="caption5"></p>
+        </div>
     </div>
     <input type="file" id="file_input" webkitdirectory directory />
-    <button id="button">开始/停止</button>
     <div id="footnote">
-        <p id="made_by">Made by 612 屠学畅</p>
-        <p id="powered_by">Powered by Electron</p>
+        <p id="made_by">612 屠学畅 制作</p>
     </div>
 </body>
 </html>
