@@ -12,15 +12,18 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('file_input').style.display = "none";
   }
   var interval = 0, state = true, surprise = 0, cur = 0, used = [], pos = [0, 5, 1, 4, 2, 3];
+
+  var oldPhoto = "";
   
   function nextPhoto() {
     var newPhoto;
     do {
       newPhoto = photoPaths[Math.floor(Math.random()*photoPaths.length)];
     } while (used.includes(newPhoto));
-    var oldPhoto = document.getElementById('photo' + cur).src;
-    if (used.includes(oldPhoto)) used.splice(used.indexOf(oldPhoto, 1));
+    if (oldPhoto !== "") used.splice(used.indexOf(oldPhoto, 1));
     used.push(newPhoto);
+    oldPhoto = newPhoto;
+    console.log(used);
     document.getElementById('unit' + cur).style.display = "block";
     document.getElementById('caption' + cur).innerHTML = path.basename(newPhoto, path.extname(newPhoto));
     document.getElementById('photo' + cur).src = newPhoto;
@@ -29,10 +32,11 @@ window.addEventListener('DOMContentLoaded', () => {
   document.onkeydown = function (e) {
     if(e.key === " "){
       if (state) {
+        oldPhoto = "";
         state = false;
         interval = 50;
         setTimeout(function change() {
-          console.log(interval);
+          // console.log(interval);
           nextPhoto();
           if(interval < 200 || surprise > 0){
             if(state){
